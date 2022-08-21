@@ -19,7 +19,7 @@ class Recipies:
                 VALUES ?, ?, ?, ?, ?;""", ())
             self.conn.commit()
             return True
-        except Exception as e:
+        except:
             return
 
     def delete(self):
@@ -49,5 +49,5 @@ class Recipies:
                 """
             )
             return self.cursor.fetchall()
-        except Exception as e:
+        except:
             return False

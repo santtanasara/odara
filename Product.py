@@ -19,7 +19,7 @@ class Product:
                 VALUES ?, ?, ?, ?, ?;""", ())
             self.conn.commit()
             return True
-        except Exception as e:
+        except:
             return
 
     def delete(self):
@@ -49,5 +49,5 @@ class Product:
                 """
             )
             return self.cursor.fetchall()
-        except Exception as e:
+        except:
             return False
