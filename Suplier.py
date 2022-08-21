@@ -1,0 +1,53 @@
+
+
+class Suplier:
+    def __init__(self, conn, id=None):
+        self.conn = conn
+        self.cursor = cursor
+        self.
+        self.
+        self.
+        self.
+        self.
+        self.id = id
+        self.table = "Suplier"
+
+    def create(self):
+        try:
+            self.cursor.execute(
+                """INSERT INTO Suplier () 
+                VALUES ?, ?, ?, ?, ?;""", ())
+            self.conn.commit()
+            return True
+        except Exception as e:
+            return
+
+    def delete(self):
+        try:
+            self.cursor.execute(
+                """DELETE FROM Suplier WHERE ID == ?;""", (self.id))
+            self.conn.commit()
+            return True
+        except:
+            return
+
+    def update(self):
+        try:
+            self.cursor.execute(
+                """UPDATE Suplier SET WHERE ID == ?;""", (self.id))
+            self.conn.commit()
+            return True
+        except:
+            return
+
+    @staticmethod
+    def read(self):
+        try:
+            self.cursor.execute(
+                """
+                SELECT * FROM Suplier;
+                """
+            )
+            return self.cursor.fetchall()
+        except Exception as e:
+            return False
