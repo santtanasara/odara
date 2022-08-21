@@ -11,25 +11,23 @@ class Feedstock:
         self.measurement_unity = measurement_unity
         self.content = content
         self.id = id
-        self.table = "Feedstock"
+        self.table = "feedstock"
 
     def create(self):
         try:
             self.cursor.execute(
-                """INSERT INTO Feedstock (name, brand, quantity, measurement_unity, content) 
-                VALUES ?, ?, ?, ?, ?;""", (self.name, self.brand, self.quantity, self.measurement_unity, self.content))
+                """INSERT INTO feedstock (name, brand, quantity, measurement_unity, content) 
+                VALUES (?, ?, ?, ?, ?)""", (self.name, self.brand, self.quantity, self.measurement_unity, self.content))
             self.conn.commit()
-            self.conn.close()
             return True
-        except:
+        except Exception as e:
             return
 
     def delete(self):
         try:
             self.cursor.execute(
-                """DELETE FROM Feedstock WHERE ID == ?;""", (self.id))
+                """DELETE FROM feedstock WHERE ID == ?;""", (self.id))
             self.conn.commit()
-            self.conn.close()
             return True
         except:
             return
@@ -37,20 +35,20 @@ class Feedstock:
     def update(self):
         try:
             self.cursor.execute(
-                """UPDATE Feedstock SET WHERE ID == ?;""", (self.id))
+                """UPDATE feedstock SET WHERE ID == ?;""", (self.id))
             self.conn.commit()
-            self.conn.close()
             return True
         except:
             return
 
-    def read(self):
+    @staticmethod
+    def read(cursor):
         try:
-            self.cursor.execute(
+            cursor.execute(
                 """
-                SELECT * FROM Feedstock;
+                SELECT * FROM feedstock;
                 """
             )
-            return self.cursor.fetchall()
-        except:
+            return cursor.fetchall()
+        except Exception as e:
             return False
