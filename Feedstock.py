@@ -35,7 +35,8 @@ class Feedstock:
     def update(self):
         try:
             self.cursor.execute(
-                """UPDATE feedstock SET WHERE ID == ?;""", (self.id))
+                """UPDATE feedstock SET name = ?, brand = ?, quantity = ?, measurement_unity = ?, content = ? 
+                WHERE ID == ?""", (self.name, self.brand, self.quantity, self.measurement_unity, self.content, self.id))
             self.conn.commit()
             return True
         except:
