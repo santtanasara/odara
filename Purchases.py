@@ -15,10 +15,9 @@ class Purchases:
     def create(self):
         try:
             self.cursor.execute(
-                """INSERT INTO Purchases (id.feedstock, id.suplier, price, quantity, expiration_date) 
+                """INSERT INTO Purchases (feedstock, suplier, price, quantity, expiration_date) 
                 VALUES ?, ?, ?, ?, ?;""", (self.feedstock, self.suplier, self.price, self.quantity, self.expiration_date))
             self.conn.commit()
-            self.conn.close()
             return True
         except:
             return
@@ -28,7 +27,6 @@ class Purchases:
             self.cursor.execute(
                 """DELETE FROM Purchases WHERE ID == ?;""", (self.id))
             self.conn.commit()
-            self.conn.close()
             return True
         except:
             return
@@ -38,7 +36,6 @@ class Purchases:
             self.cursor.execute(
                 """UPDATE Purchases SET WHERE ID == ?;""", (self.id))
             self.conn.commit()
-            self.conn.close()
             return True
         except:
             return
