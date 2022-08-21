@@ -20,7 +20,7 @@ class Purchases:
             self.conn.commit()
             self.conn.close()
             return True
-        except:
+        except Exception as e:
             return
 
     def delete(self):
@@ -28,7 +28,6 @@ class Purchases:
             self.cursor.execute(
                 """DELETE FROM Purchases WHERE ID == ?;""", (self.id))
             self.conn.commit()
-            self.conn.close()
             return True
         except:
             return
@@ -38,11 +37,11 @@ class Purchases:
             self.cursor.execute(
                 """UPDATE Purchases SET WHERE ID == ?;""", (self.id))
             self.conn.commit()
-            self.conn.close()
             return True
         except:
             return
 
+    @staticmethod
     def read(self):
         try:
             self.cursor.execute(
@@ -51,5 +50,5 @@ class Purchases:
                 """
             )
             return self.cursor.fetchall()
-        except:
+        except Exception as e:
             return False
