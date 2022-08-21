@@ -1,20 +1,17 @@
 class Suplier:
-    def __init__(self, conn, id=None):
+    def __init__(self, conn,cursor, name, website, id=None):
         self.conn = conn
         self.cursor = cursor
-        self.
-        self.
-        self.
-        self.
-        self.
+        self.name = name
+        self.website = website
         self.id = id
         self.table = "Suplier"
 
     def create(self):
         try:
             self.cursor.execute(
-                """INSERT INTO Suplier () 
-                VALUES ?, ?, ?, ?, ?;""", ())
+                """INSERT INTO Suplier (name, website, id) 
+                VALUES ?, ?, ?, ?, ?;""", (self.name, self.website, self.id))
             self.conn.commit()
             return True
         except:

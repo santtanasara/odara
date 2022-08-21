@@ -1,20 +1,19 @@
 class Recipies:
-    def __init__(self, conn, id=None):
+    def __init__(self, conn, cursor, name, weight, category, feedstock id=None):
         self.conn = conn
         self.cursor = cursor
-        self.
-        self.
-        self.
-        self.
-        self.
+        self.name = name
+        self.weight = weight
+        self.category = category
+        self.feedstock = feedstock
         self.id = id
         self.table = "Recipies"
 
     def create(self):
         try:
             self.cursor.execute(
-                """INSERT INTO Recipies () 
-                VALUES ?, ?, ?, ?, ?;""", ())
+                """INSERT INTO Recipies (name, weight, category, feedstock, id) 
+                VALUES ?, ?, ?, ?, ?;""", (self.name, self.weight, self.category, self.id))
             self.conn.commit()
             return True
         except:

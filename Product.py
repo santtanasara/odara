@@ -1,20 +1,17 @@
 class Product:
-    def __init__(self, conn, id=None):
+    def __init__(self, conn, cursor, recipientID, price, id=None):
         self.conn = conn
         self.cursor = cursor
-        self.
-        self.
-        self.
-        self.
-        self.
+        self.recipientID = recipientID 
+        self.price = price
         self.id = id
         self.table = "Product"
 
     def create(self):
         try:
             self.cursor.execute(
-                """INSERT INTO Product () 
-                VALUES ?, ?, ?, ?, ?;""", ())
+                """INSERT INTO Product (recipientID, price, id) 
+                VALUES ?, ?, ?, ?, ?;""", (self.recipientID, self.price, self.id))
             self.conn.commit()
             return True
         except:
