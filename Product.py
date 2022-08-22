@@ -1,26 +1,28 @@
 class Product:
-    def __init__(self, conn, cursor, recipientID, price, id=None):
+    def __init__(self, conn, cursor, recipieID, price, creation_date, quantity, id=None):
         self.conn = conn
         self.cursor = cursor
-        self.recipientID = recipientID 
+        self.recipieID = recipieID
         self.price = price
+        self.creation_date = creation_date
+        self.quantity = quantity
         self.id = id
-        self.table = "Product"
+        self.table = "products"
 
     def create(self):
         try:
             self.cursor.execute(
-                """INSERT INTO Product (recipientID, price, id) 
-                VALUES ?, ?, ?, ?, ?;""", (self.recipientID, self.price, self.id))
+                """INSERT INTO products (recipieID, price, creation_date, quantity) 
+                VALUES (?, ?, ?, ?)""", (self.recipieID, self.price, self.creation_date, self.quantity))
             self.conn.commit()
             return True
-        except:
+        except Exception as e:
             return
 
     def delete(self):
         try:
             self.cursor.execute(
-                """DELETE FROM Product WHERE ID == ?;""", (self.id))
+                """DELETE FROM products WHERE ID == ?;""", (self.id))
             self.conn.commit()
             return True
         except:
@@ -29,20 +31,21 @@ class Product:
     def update(self):
         try:
             self.cursor.execute(
-                """UPDATE Product SET WHERE ID == ?;""", (self.id))
+                """UPDATE products SET recipieID = ?, price = ?, creation_date = ?, quantity = ? 
+                WHERE ID == ?;""", (self.recipieID, self.price, self.creation_date, self.quantity, self.id))
             self.conn.commit()
             return True
         except:
             return
 
     @staticmethod
-    def read(self):
+    def read(cursor):
         try:
-            self.cursor.execute(
+            cursor.execute(
                 """
-                SELECT * FROM Product;
+                SELECT * FROM products;
                 """
             )
-            return self.cursor.fetchall()
-        except:
+            return cursor.fetchall()
+        except Exception as e:
             return False

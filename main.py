@@ -1,5 +1,10 @@
 from Config import Config
 from Feedstock import Feedstock
+from Product import Product
+from Purchases import Purchases
+from Suplier import Suplier
+from Recipies import Recipies
+
 
 
 
@@ -11,9 +16,6 @@ if __name__ == "__main__":
     with open('sql/create_tables.sql', 'rt') as f:
         schema = f.read()
         cursor.executescript(schema)
-
-    materias = Feedstock.read(cursor)
-    print(materias)
 
     conn.close()
 

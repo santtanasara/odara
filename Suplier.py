@@ -5,22 +5,22 @@ class Suplier:
         self.name = name
         self.website = website
         self.id = id
-        self.table = "Suplier"
+        self.table = "supliers"
 
     def create(self):
         try:
             self.cursor.execute(
-                """INSERT INTO Suplier (name, website, id) 
-                VALUES ?, ?, ?, ?, ?;""", (self.name, self.website, self.id))
+                """INSERT INTO supliers (name, website) 
+                VALUES (?, ?)""", (self.name, self.website))
             self.conn.commit()
             return True
-        except:
+        except Exception as e:
             return
 
     def delete(self):
         try:
             self.cursor.execute(
-                """DELETE FROM Suplier WHERE ID == ?;""", (self.id))
+                """DELETE FROM supliers WHERE ID == ?;""", (self.id))
             self.conn.commit()
             return True
         except:
@@ -29,20 +29,21 @@ class Suplier:
     def update(self):
         try:
             self.cursor.execute(
-                """UPDATE Suplier SET WHERE ID == ?;""", (self.id))
+                """UPDATE supliers SET name = ?, website = ?
+                WHERE ID == ?;""", (self.name, self.website, self.id))
             self.conn.commit()
             return True
         except:
             return
 
     @staticmethod
-    def read(self):
+    def read(cursor):
         try:
-            self.cursor.execute(
+            cursor.execute(
                 """
-                SELECT * FROM Suplier;
+                SELECT * FROM supliers;
                 """
             )
-            return self.cursor.fetchall()
+            return cursor.fetchall()
         except:
             return False

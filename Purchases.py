@@ -1,7 +1,7 @@
 
 
 class Purchases:
-    def __init__(self, conn, cursor, feedstock, suplier, price, quantity, expiration_date id=None):
+    def __init__(self, conn, cursor, feedstock, suplier, price, quantity, expiration_date, id=None):
         self.conn = conn
         self.cursor = cursor
         self.feedstock = feedstock
@@ -10,22 +10,22 @@ class Purchases:
         self.quantity = quantity
         self.expiration_date = expiration_date
         self.id = id
-        self.table = "Purchases"
+        self.table = "purchases"
 
     def create(self):
         try:
             self.cursor.execute(
-                """INSERT INTO Purchases (feedstock, suplier, price, quantity, expiration_date) 
-                VALUES ?, ?, ?, ?, ?;""", (self.feedstock, self.suplier, self.price, self.quantity, self.expiration_date))
+                """INSERT INTO purchases (feedstockID, suplierID, price, quantity, expiration_date) 
+                VALUES (?, ?, ?, ?, ?)""", (self.feedstock, self.suplier, self.price, self.quantity, self.expiration_date))
             self.conn.commit()
             return True
-        except:
+        except Exception as e:
             return
 
     def delete(self):
         try:
             self.cursor.execute(
-                """DELETE FROM Purchases WHERE ID == ?;""", (self.id))
+                """DELETE FROM purchases WHERE ID == ?;""", (self.id))
             self.conn.commit()
             return True
         except:
@@ -34,19 +34,21 @@ class Purchases:
     def update(self):
         try:
             self.cursor.execute(
-                """UPDATE Purchases SET WHERE ID == ?;""", (self.id))
+                """UPDATE purchases SET feedstock = ?, suplier = ?, price = ?, quantity = ?, expiration_date = ?
+                WHERE ID == ?;""", (self.feedstock, self.suplier, self.price, self.quantity, self.expiration_date, self.id))
             self.conn.commit()
             return True
         except:
             return
 
-    def read(self):
+    @staticmethod
+    def read(cursor):
         try:
-            self.cursor.execute(
+            cursor.execute(
                 """
-                SELECT * FROM Purchases;
+                SELECT * FROM purchases;
                 """
             )
-            return self.cursor.fetchall()
-        except:
+            return cursor.fetchall()
+        except Exception as e:
             return False

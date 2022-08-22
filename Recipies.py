@@ -1,5 +1,5 @@
 class Recipies:
-    def __init__(self, conn, cursor, name, weight, category, feedstock id=None):
+    def __init__(self, conn, cursor, name, weight, category, feedstock, id=None):
         self.conn = conn
         self.cursor = cursor
         self.name = name
@@ -7,13 +7,13 @@ class Recipies:
         self.category = category
         self.feedstock = feedstock
         self.id = id
-        self.table = "Recipies"
+        self.table = "recipies"
 
     def create(self):
         try:
             self.cursor.execute(
-                """INSERT INTO Recipies (name, weight, category, feedstock, id) 
-                VALUES ?, ?, ?, ?, ?;""", (self.name, self.weight, self.category, self.id))
+                """INSERT INTO recipies (name, weight, category, feedstock) 
+                VALUES (?, ?, ?, ?)""", (self.name, self.weight, self.category, self.feedstock))
             self.conn.commit()
             return True
         except:
@@ -22,7 +22,7 @@ class Recipies:
     def delete(self):
         try:
             self.cursor.execute(
-                """DELETE FROM Recipies WHERE ID == ?;""", (self.id))
+                """DELETE FROM recipies WHERE ID == ?;""", (self.id))
             self.conn.commit()
             return True
         except:
@@ -31,20 +31,21 @@ class Recipies:
     def update(self):
         try:
             self.cursor.execute(
-                """UPDATE Recipies SET WHERE ID == ?;""", (self.id))
+                """UPDATE recipies SET name = ?, weight = ?, category = ?, feedstock = ?
+                 WHERE ID == ?;""", (self.name, self.weight, self.category, self.id))
             self.conn.commit()
             return True
         except:
             return
 
     @staticmethod
-    def read(self):
+    def read(cursor):
         try:
-            self.cursor.execute(
+            cursor.execute(
                 """
-                SELECT * FROM Recipies;
+                SELECT * FROM recipies;
                 """
             )
-            return self.cursor.fetchall()
+            return cursor.fetchall()
         except:
             return False
