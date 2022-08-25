@@ -1,9 +1,5 @@
 from Config import Config
-from Feedstock import Feedstock
-from Product import Product
-from Purchases import Purchases
-from Suplier import Suplier
-from Recipies import Recipies
+
 
 
 
@@ -11,11 +7,13 @@ from Recipies import Recipies
 
 if __name__ == "__main__":
     config = Config()
-    conn = config.get_client_sqlite()
-    cursor = conn.cursor()
+    conn, cursor = config.get_client_sqlite()
     with open('sql/create_tables.sql', 'rt') as f:
         schema = f.read()
         cursor.executescript(schema)
 
-    conn.close()
+    cursor.execute("SELECT * FROM recipies;")
+    print(cursor.fetchall())
+
+    config.disconnect_sqlite()
 

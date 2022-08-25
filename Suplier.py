@@ -1,7 +1,7 @@
+from Config import Config
+
 class Suplier:
-    def __init__(self, conn,cursor, name, website, id=None):
-        self.conn = conn
-        self.cursor = cursor
+    def __init__(self, name, website, id=None):
         self.name = name
         self.website = website
         self.id = id
@@ -9,41 +9,54 @@ class Suplier:
 
     def create(self):
         try:
-            self.cursor.execute(
+            config = Config()
+            conn, cursor = config.get_client_sqlite()
+            cursor.execute(
                 """INSERT INTO supliers (name, website) 
                 VALUES (?, ?)""", (self.name, self.website))
-            self.conn.commit()
+            conn.commit()
+            config.disconnect_sqlite()
             return True
         except Exception as e:
             return
 
     def delete(self):
         try:
-            self.cursor.execute(
+            config = Config()
+            conn, cursor = config.get_client_sqlite()
+            cursor.execute(
                 """DELETE FROM supliers WHERE ID == ?;""", (self.id))
-            self.conn.commit()
+            conn.commit()
+            config.disconnect_sqlite()
             return True
         except:
             return
 
     def update(self):
         try:
-            self.cursor.execute(
+            config = Config()
+            conn, cursor = config.get_client_sqlite()
+            cursor.execute(
                 """UPDATE supliers SET name = ?, website = ?
                 WHERE ID == ?;""", (self.name, self.website, self.id))
-            self.conn.commit()
+            conn.commit()
+            config.disconnect_sqlite()
             return True
         except:
             return
 
     @staticmethod
-    def read(cursor):
+    def read():
         try:
+            config = Config()
+            conn, cursor = config.get_client_sqlite()
             cursor.execute(
                 """
                 SELECT * FROM supliers;
                 """
             )
-            return cursor.fetchall()
+            result =  cursor.fetchall()
+            config.disconnect_sqlite()
+            return result
         except:
             return False
