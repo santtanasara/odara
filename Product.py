@@ -1,6 +1,7 @@
 from Config import Config
 from Recipies import Recipies
 from Feedstock import Feedstock
+import ast
 
 class Product:
     def __init__(self, recipieID, price, creation_date, quantity, id=None):
@@ -20,7 +21,7 @@ class Product:
                 VALUES (?, ?, ?, ?)""", (self.recipieID, self.price, self.creation_date, self.quantity))
 
             recipie = Recipies.read(id=self.recipieID)
-            for k, v in recipie[-1].items(): #transformar em dict
+            for k, v in ast.literal_eval(recipie[-1]).items():
                 feedstock = Feedstock.read_by_name(k)
                 change_next_feedstock = False
                 for i in range(0, feedstock):

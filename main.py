@@ -1,5 +1,5 @@
 from Config import Config
-
+from interfaces import main
 
 
 
@@ -12,8 +12,6 @@ if __name__ == "__main__":
         schema = f.read()
         cursor.executescript(schema)
 
-    cursor.execute("SELECT * FROM recipies;")
-    print(cursor.fetchall())
-
+    main.run()
     config.disconnect_sqlite()
 
