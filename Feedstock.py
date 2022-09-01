@@ -2,7 +2,7 @@ from Config import Config
 
 
 class Feedstock:
-    def __init__(self, name, brand, measurement_unity, quantity, content, id_purchase, id=None):
+    def __init__(self, name, brand, measurement_unity, quantity, content, id_purchase, category, id=None):
         self.name = name
         self.brand = brand
         self.quantity = quantity
@@ -11,15 +11,16 @@ class Feedstock:
         self.id_purchase = id_purchase
         self.id = id
         self.table = "feedstock"
+        self.category = category
 
     def create(self):
         try:
             config = Config()
             conn, cursor = config.get_client_sqlite()
             cursor.execute(
-                """INSERT INTO feedstock (name, brand, measurement_unity, quantity, content, id_purchase) 
-                VALUES (?, ?, ?, ?, ?, ?)""", (self.name, self.brand, self.measurement_unity, self.quantity,
-                                               self.content, self.id_purchase))
+                """INSERT INTO feedstock (name, brand, measurement_unity, quantity, content, category, id_purchase) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)""", (self.name, self.brand, self.measurement_unity, self.quantity,
+                                               self.content, self.category, self.id_purchase))
             conn.commit()
             config.disconnect_sqlite()
             return True
@@ -43,7 +44,8 @@ class Feedstock:
             config = Config()
             conn, cursor = config.get_client_sqlite()
             cursor.execute(
-                """UPDATE feedstock SET name = ?, brand = ?, measurement_unity = ?, quantity = ?, content = ?, id_purchase = ? 
+                """UPDATE feedstock SET name = ?, brand = ?, measurement_unity = ?, quantity = ?, content = ?, 
+                category = ?, id_purchase = ? 
                 WHERE ID == ?""", (self.name, self.brand, self.measurement_unity, self.quantity,
                                    self.content, self.id_purchase, self.id))
             conn.commit()
@@ -53,21 +55,31 @@ class Feedstock:
             return
 
     @staticmethod
-    def read(id=None):
+    def read(category=None, id=None):
         try:
             config = Config()
             conn, cursor = config.get_client_sqlite()
-            if not id:
+            if not id and not category:
                 cursor.execute(
                     """
                     SELECT * FROM feedstock;
                     """
                 )
-            else:
+            elif id and not category:
                 cursor.execute(
                     """
                     SELECT * FROM feedstock WHERE id == ?;
                     """, id)
+
+            elif category:
+                cursor.execute(
+                    """
+                    SELECT id, name, brand, measurement_unity, sum(quantity) AS quantity, 
+                    sum(content) AS content, category  
+                    FROM feedstock WHERE category == ?
+                    GROUP BY name;
+                    """, (category, )
+                )
             result = cursor.fetchall()
             config.disconnect_sqlite()
             return result
