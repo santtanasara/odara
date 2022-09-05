@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from interfaces.Feedstock import Feedstock_interface
+from interfaces.Suplier import Suplier_Interface
+from interfaces.Purchase import Purchase_Interface
 
 ##Variáveis iniciais
 category_option = "Sabonete"
@@ -56,15 +58,24 @@ def run():
     main_frame.place(x=0, y=135, relwidth=1)
 
     def f_menu(o):
-        Feedstock_interface(main_frame, o, category_option)
-        f_menu_option.set("Matérias Primas")
+        if o == "Estoque":
+            Feedstock_interface(main_frame, category_option)
+            f_menu_option.set("Matérias Primas")
+
+        elif o == "Fornecedores":
+            Suplier_Interface(main_frame)
+            f_menu_option.set("Matérias Primas")
+
+    def p_menu(o):
+        Purchase_Interface(main_frame, o, category_option)
+        p_menu_option.set("Compras")
 
     f_menu_option.set("Matérias Primas")
     p_menu_option.set("Compras")
     prod_menu_option.set("Produtos")
 
     feedstock_options_menu = OptionMenu(menu_frame, f_menu_option, *feedstock_options, command=f_menu)
-    purchases_options_menu = OptionMenu(menu_frame, p_menu_option, *purchases_options)
+    purchases_options_menu = OptionMenu(menu_frame, p_menu_option, *purchases_options, command=p_menu)
     products_options_menu = OptionMenu(menu_frame, prod_menu_option, *products_options)
 
     feedstock_options_menu.config(font=("sans seriff", 12), padx=30, bg="#D3D3D3")

@@ -1,6 +1,7 @@
 from Feedstock import Feedstock
 from Config import Config
 from datetime import datetime
+import sqlite3
 
 class Purchases:
     def __init__(self, feedstock, suplier, price, quantity, unity_price, expiration_date, category, id=None):
@@ -64,18 +65,23 @@ class Purchases:
             return
 
     @staticmethod
-    def read():
+    def read(category):
         try:
             config = Config()
             conn, cursor = config.get_client_sqlite()
+            conn.row_factory = sqlite3.Row
             cursor.execute(
                 """
-                SELECT * FROM purchases;
-                """
+                SELECT s.name, f.name as f_name, f.brand, f.measurement_unity, f.content, p.price, p.unity_price, p.quantity, p.expiration_date, p.buying_date
+                 FROM purchases as p 
+                 JOIN supliers as s ON p.id == s.id 
+                 JOIN feedstock as f ON f.id == p.id WHERE p.category == ?
+                """, (category, )
             )
-            result =  cursor.fetchall()
+            rows =  cursor.fetchall()
+            columns = cursor.description
             config.disconnect_sqlite()
-            return result
+            return rows, [col[0] for col in columns]
         except Exception as e:
             return False
 
